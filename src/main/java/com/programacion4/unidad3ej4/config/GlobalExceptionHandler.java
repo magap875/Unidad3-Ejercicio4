@@ -3,9 +3,7 @@ package com.programacion4.unidad3ej4.config;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import com.programacion4.unidad3ej4.config.exceptions.CustomException;
-
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.Instant;
@@ -16,8 +14,10 @@ public class GlobalExceptionHandler {
 
     /**
      * Maneja las excepciones personalizadas
+     * 
      * @param ex La excepción personalizada
-     * Captura las excepciones personalizadas y las convierte en una respuesta HTTP con el estado de la excepción
+     *           Captura las excepciones personalizadas y las convierte en una
+     *           respuesta HTTP con el estado de la excepción
      */
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<BaseResponse<Object>> handleCustomException(CustomException ex) {
@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
 
     /**
      * Maneja las excepciones de validación
+     * 
      * @param ex La excepción de validación
      * @return La respuesta HTTP con el estado de la excepción
      */
@@ -52,18 +53,21 @@ public class GlobalExceptionHandler {
 
     /**
      * Maneja las excepciones genéricas
+     * 
      * @param ex La excepción genérica
      * @return La respuesta HTTP con el estado de la excepción
      */
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponse<Object>> handleGeneric(Exception ex) {
-        // En producción, no mostrar el ex.getMessage() detallado para evitar fugas de info
+        // En producción, no mostrar el ex.getMessage() detallado para evitar fugas de
+        // info
         BaseResponse<Object> response = BaseResponse.builder()
                 .message("Ocurrió un error inesperado")
                 .errors(List.of("Contacte al administrador"))
                 .timestamp(Instant.now().toString())
                 .build();
 
-        return ResponseEntity.internalServerError().body(response); 
+        return ResponseEntity.internalServerError().body(response);
     }
 }
